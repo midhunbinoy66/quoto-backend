@@ -1,9 +1,18 @@
 import express from 'express';
+import dotenv from 'dotenv';
+import { connectDb } from './config/db.js';
+import router  from   './routes/quoteRoutes.js';
 
+dotenv.config();
 
 const app = express();
 
 app.use(express.json());
-app.use(express.static());
+app.use('/api/quotes',router);
 
-app.listen(process.env.PORT)
+connectDb().then(()=>{
+    console.log('database connection established...')
+})
+app.listen(process.env.PORT,()=>{
+    console.log(`server is alive ${process.env.PORT}`);
+})
