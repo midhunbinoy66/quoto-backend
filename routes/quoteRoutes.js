@@ -1,9 +1,14 @@
 import express from 'express';
+import Quote from '../models/quoteModel.js';
 const router = express.Router();
 
 router.get('/random',async(req,res)=>{
     try {
-        res.json({status:1,message:'Random quote route hit..'})
+
+        const count = await Quote.countDocuments();       
+        const random = Math.floor(Math.random()*count);
+        const quote = await Quote.findOne().skip(random)
+        return res.json({status:1,quote})
         
     } catch (error) {
         console.error(error);
